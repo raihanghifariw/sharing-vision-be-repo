@@ -4,7 +4,6 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sharing-vision/sharing-vision-be/handlers"
-	"os"
 )
 
 // SetupRoutes registers CORS, security headers, and the health check.
@@ -33,15 +32,10 @@ func applyMiddleware(router *gin.Engine) {
 		c.Next()
 	})
 
-	// CORS — update AllowOrigins after getting the Vercel URL
-	vercelURL := os.Getenv("FRONTEND_URL")
-	origins := []string{"http://localhost:3000"}
-	if vercelURL != "" {
-		origins = append(origins, vercelURL)
-	}
-
+	// CORS — allow all origins so any frontend deployment can connect.
+	// This is safe for a public read/write article API with no auth.
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     origins,
+		AllowAllOrigins:  true,
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		AllowCredentials: false,

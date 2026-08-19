@@ -8,7 +8,8 @@ import (
 
 type ArticleService interface {
 	Create(req validators.ArticleRequest) error
-	FindAll(limit, offset int) ([]models.Post, error)
+	// FindAll fetches posts. Pass status="" to return all statuses.
+	FindAll(limit, offset int, status string) ([]models.Post, error)
 	FindByID(id uint) (*models.Post, error)
 	Update(id uint, req validators.ArticleRequest) error
 	Delete(id uint) error
@@ -32,8 +33,8 @@ func (s *articleService) Create(req validators.ArticleRequest) error {
 	return s.repo.Create(post)
 }
 
-func (s *articleService) FindAll(limit, offset int) ([]models.Post, error) {
-	return s.repo.FindAll(limit, offset)
+func (s *articleService) FindAll(limit, offset int, status string) ([]models.Post, error) {
+	return s.repo.FindAll(limit, offset, status)
 }
 
 func (s *articleService) FindByID(id uint) (*models.Post, error) {

@@ -55,7 +55,17 @@ func (h *ArticleHandler) GetArticles(c *gin.Context) {
 		return
 	}
 
-	posts, err := h.service.FindAll(limit, offset)
+	// Optional ?status= query param. Validated if provided.
+	status := c.Query("status")
+	if status != "" {
+		valid := map[string]bool{"publish": true, "draft": true, "thrash": true}
+		if !valid[status] {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "status must be publish, draft, or thrash"})
+			return
+		}
+	}
+
+	posts, err := h.service.FindAll(limit, offset, status)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
 		return
