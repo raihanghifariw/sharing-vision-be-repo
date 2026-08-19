@@ -1,0 +1,16 @@
+# Compiled binaries
+main
+*.exe
+*.out
+
+# Environment files
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
