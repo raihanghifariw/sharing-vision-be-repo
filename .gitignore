@@ -14,3 +14,6 @@ main
 # OS
 .DS_Store
 Thumbs.db
+
+# Railway / Heroku (not needed with Nixpacks)
+Procfile
