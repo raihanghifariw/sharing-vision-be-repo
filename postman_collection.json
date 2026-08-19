@@ -1,0 +1,149 @@
+{
+  "info": {
+    "_postman_id": "sharing-vision-article-api",
+    "name": "Sharing Vision — Article API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/health"
+      }
+    },
+    {
+      "name": "Create Article (Valid - Publish)",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/article/",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Ini Adalah Judul Artikel Yang Cukup Panjang\",\n  \"content\": \"Content artikel ini harus memiliki minimal dua ratus karakter agar dapat lolos dari validasi yang ada di backend. Kita perlu menambahkan lebih banyak teks agar mencapai batas minimal tersebut. Ini adalah artikel tentang teknologi web modern.\",\n  \"category\": \"teknologi\",\n  \"status\": \"publish\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Article (Valid - Draft)",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/article/",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Draft Artikel Yang Belum Selesai Ditulis\",\n  \"content\": \"Ini adalah draft artikel yang belum selesai. Konten ini masih perlu dikembangkan lebih lanjut agar mencapai minimal dua ratus karakter. Perlu ditambahkan lebih banyak informasi yang relevan dan berguna bagi pembaca nantinya.\",\n  \"category\": \"draft-category\",\n  \"status\": \"draft\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Article (Invalid - Title Too Short)",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/article/",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Terlalu Pendek\",\n  \"content\": \"Content artikel ini harus memiliki minimal dua ratus karakter agar dapat lolos dari validasi yang ada di backend. Kita perlu menambahkan lebih banyak teks agar mencapai batas minimal tersebut.\",\n  \"category\": \"teknologi\",\n  \"status\": \"publish\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Article (Invalid - Content Too Short)",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/article/",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Judul Artikel Yang Sudah Cukup Panjang\",\n  \"content\": \"Terlalu pendek.\",\n  \"category\": \"teknologi\",\n  \"status\": \"publish\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Article (Invalid - Bad Status)",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/article/",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Judul Artikel Yang Sudah Cukup Panjang\",\n  \"content\": \"Content artikel ini harus memiliki minimal dua ratus karakter agar dapat lolos dari validasi yang ada di backend. Kita perlu menambahkan lebih banyak teks agar mencapai batas minimal tersebut.\",\n  \"category\": \"teknologi\",\n  \"status\": \"active\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Get All Articles (Limit 10, Offset 0)",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/article/10/0"
+      }
+    },
+    {
+      "name": "Get All Articles (Limit 5, Offset 5)",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/article/5/5"
+      }
+    },
+    {
+      "name": "Get Article By ID",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/article/detail/1"
+      }
+    },
+    {
+      "name": "Get Article By ID (Not Found)",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/article/detail/99999"
+      }
+    },
+    {
+      "name": "Update Article",
+      "request": {
+        "method": "PUT",
+        "url": "{{base_url}}/article/1",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Judul Artikel Yang Telah Diperbarui Isinya\",\n  \"content\": \"Content artikel ini telah diperbarui dan harus tetap memiliki minimal dua ratus karakter agar dapat lolos dari validasi yang ada di backend sistem ini. Artikel ini membahas topik yang sangat menarik dan relevan.\",\n  \"category\": \"update\",\n  \"status\": \"publish\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Update Article (Invalid)",
+      "request": {
+        "method": "PUT",
+        "url": "{{base_url}}/article/1",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Pendek\",\n  \"content\": \"ok\",\n  \"category\": \"ok\",\n  \"status\": \"publish\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Delete Article",
+      "request": {
+        "method": "DELETE",
+        "url": "{{base_url}}/article/1"
+      }
+    },
+    {
+      "name": "Delete Article (Not Found)",
+      "request": {
+        "method": "DELETE",
+        "url": "{{base_url}}/article/99999"
+      }
+    }
+  ]
+}
