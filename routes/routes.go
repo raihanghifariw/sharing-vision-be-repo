@@ -6,11 +6,10 @@ import (
 	"github.com/sharing-vision/sharing-vision-be/handlers"
 )
 
-// SetupRoutes registers CORS, security headers, and the health check.
-// Article routes are registered separately via RegisterArticleRoutes after DB is ready.
-func SetupRoutes(router *gin.Engine, articleHandler *handlers.ArticleHandler) {
+// SetupMiddleware registers CORS and security headers.
+// Must be called before RegisterArticleRoutes.
+func SetupMiddleware(router *gin.Engine) {
 	applyMiddleware(router)
-	RegisterArticleRoutes(router, articleHandler)
 }
 
 // RegisterArticleRoutes adds the five article endpoints.
