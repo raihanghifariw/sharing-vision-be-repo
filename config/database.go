@@ -13,12 +13,16 @@ var DB *gorm.DB
 // InitDatabase opens a GORM connection and returns an error instead of calling
 // log.Fatalf — callers decide whether to retry or crash.
 func InitDatabase() error {
+	// Prefer direct Railway MySQL vars (MYSQLHOST, etc.) over DB_* aliases.
+	// Falls back to DB_* so local .env still works.
+	host := firstNonEmpty(os.Getenv("MYSQLHOST"), os.Getenv("DB_HOST"))
+	port := firstNonEmpty(os.Getenv("MYSQLPORT"), os.Getenv("DB_PORT"), "3306")
+	user := firstNonEmpty(os.Getenv("MYSQLUSER"), os.Getenv("DB_USER"))
+	pass := firstNonEmpty(os.Getenv("MYSQLPASSWORD"), os.Getenv("DB_PASSWORD"))
+	name := firstNonEmpty(os.Getenv("MYSQLDATABASE"), os.Getenv("DB_NAME"))
+
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_NAME"),
+		user, pass, host, port, name,
 	)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -28,4 +32,14 @@ func InitDatabase() error {
 
 	DB = db
 	return nil
+}
+
+// firstNonEmpty returns the first non-empty string from the arguments.
+func firstNonEmpty(values ...string) string {
+	for _, v := range values {
+		if v != "" {
+			return v
+		}
+	}
+	return ""
 }
